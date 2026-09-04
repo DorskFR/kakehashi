@@ -7,11 +7,11 @@ component is mounted, so its scoped CSS, effects and internal state all behave
 exactly as they do in a Svelte app.
 
 ```sh
-npm i -D kakehashi
+npm i -D @dorsk/kakehashi
 ```
 
 ```jsx
-import { toReact } from 'kakehashi';
+import { toReact } from '@dorsk/kakehashi';
 import ButtonSvelte from './Button.svelte';
 
 const Button = toReact(ButtonSvelte, 'Button');
