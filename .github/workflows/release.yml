@@ -23,13 +23,18 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
-      # Idempotent: the first version is hand-published to bootstrap trusted publishing.
-      - name: Publish if this version is new
+      # Idempotent: a re-run (or a hand-published first version) goes green.
+      # Deliberately no `npm view` pre-check — the registry read endpoint lags
+      # minutes behind a publish, so it reports "missing" for a version that
+      # exists and turns the skip into a failed publish. Attempt the publish and
+      # treat only the version-conflict error as success.
+      - name: Publish
         run: |
-          NAME=$(node -p "require('./package.json').name")
-          VERSION=$(node -p "require('./package.json').version")
-          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
-            echo "$NAME@$VERSION already published — skipping."
+          if out=$(npm publish --provenance --access public 2>&1); then
+            echo "$out"
           else
-            npm publish --provenance --access public
+            status=$?
+            echo "$out"
+            printf '%s' "$out" | grep -qi 'cannot publish over the previously published versions' || exit "$status"
+            echo 'Version already published — nothing to do.'
           fi
