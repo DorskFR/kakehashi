@@ -1,6 +1,6 @@
 {
   "name": "@dorsk/kakehashi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Use real Svelte 5 components inside React. A thin bridge — mounts the actual compiled component, keeps its scoped CSS, passes React children through.",
   "type": "module",
   "license": "MIT",
