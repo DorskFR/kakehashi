@@ -1,0 +1,66 @@
+{
+  "name": "kakehashi",
+  "version": "0.1.0",
+  "description": "Use real Svelte 5 components inside React. A thin bridge — mounts the actual compiled component, keeps its scoped CSS, passes React children through.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Dorsk <dorsk.dev@gmail.com>",
+  "homepage": "https://github.com/DorskFR/kakehashi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DorskFR/kakehashi.git"
+  },
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "react",
+    "interop",
+    "bridge",
+    "wrapper"
+  ],
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./internal/props.svelte.js": "./dist/props.svelte.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && cp src/props.svelte.js dist/props.svelte.js",
+    "check": "tsc -p tsconfig.json",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepare": "lefthook install || true",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.12",
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "jsdom": "^30.0.1",
+    "lefthook": "^2.1.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "svelte": "^5.57.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^5.0.0"
+  }
+}
