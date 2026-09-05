@@ -1,8 +1,8 @@
 <script>
-	let { name = 'world', tone = 'plain', children } = $props();
+	let { name = 'world', tone = 'plain', children, onclick } = $props();
 </script>
 
-<p class="greet {tone}" data-testid="greet">
+<p class="greet {tone}" data-testid="greet" {onclick}>
 	Hello {name}{#if children}, {@render children()}{/if}
 </p>
 

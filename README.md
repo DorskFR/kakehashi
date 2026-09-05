@@ -22,6 +22,27 @@ const Button = toReact(ButtonSvelte, 'Button');
 Props stay reactive — updates mutate the component's props rather than
 remounting it — and React children are passed through as the default snippet.
 
+## Named snippets
+
+A React element prop becomes a named snippet. A function prop is treated as an
+event handler unless you wrap it in `snippet()`, in which case the Svelte side
+can `{@render name(...args)}` and the function receives those arguments.
+
+```jsx
+import { snippet, toReact } from '@dorsk/kakehashi';
+import TabsSvelte from './Tabs.svelte';
+
+const Tabs = toReact(TabsSvelte, 'Tabs');
+
+<Tabs
+  items={['One', 'Two']}
+  item={snippet((label, i) => <span>{i + 1}. {label}</span>)}
+  panel={<p>Panel content</p>}
+/>
+```
+
+Which props are snippets is decided when the component mounts.
+
 Your bundler must compile Svelte (`.svelte` and `.svelte.js`).
 
 ## Why
@@ -37,7 +58,7 @@ implementation to keep in sync.
 
 ## Not handled yet
 
-Named snippets, `bind:` two-way props, SSR.
+`bind:` two-way props, SSR.
 
 ## License
 
