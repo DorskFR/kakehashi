@@ -3,6 +3,9 @@
   "version": "0.2.0",
   "description": "Use real Svelte 5 components inside React. A thin bridge — mounts the actual compiled component, keeps its scoped CSS, passes React children through.",
   "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
   "license": "MIT",
   "author": "Dorsk <dorsk.dev@gmail.com>",
   "homepage": "https://github.com/DorskFR/kakehashi",
