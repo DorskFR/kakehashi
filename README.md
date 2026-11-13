@@ -45,6 +45,17 @@ Which props are snippets is decided when the component mounts.
 
 Your bundler must compile Svelte (`.svelte` and `.svelte.js`).
 
+## Renamed props
+
+React never forwards `key`. To reach a Svelte prop of that name, or any name
+React reserves, map it from another React prop:
+
+```tsx
+const SortableList = toReact(SortableListSvelte, 'SortableList', { rename: { itemKey: 'key' } });
+
+<SortableList items={items} itemKey={(item) => item.id} />
+```
+
 ## Why
 
 Claude Design (claude.ai/design) renders React: its agent builds UI from
