@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { snippet, toReact } from '../src/index.js';
 import Counter from './fixtures/Counter.svelte';
 import Greeting from './fixtures/Greeting.svelte';
+import Keyed from './fixtures/Keyed.svelte';
 import Tabs from './fixtures/Tabs.svelte';
 
 declare global {
@@ -127,5 +128,24 @@ describe('named snippets', () => {
 		await act(async () => root.render(<Hello name="x" onclick={() => clicks++} />));
 		await act(async () => (el() as HTMLElement).click());
 		expect(clicks).toBe(1);
+	});
+
+});
+
+describe('rename', () => {
+	type KeyedProps = { items: string[]; itemKey: (item: string) => string };
+	const List = toReact<KeyedProps>(Keyed, 'Keyed', { rename: { itemKey: 'key' } });
+	const rows = () =>
+		[...host.querySelectorAll('[data-testid="keyed"] li')].map((li) => li.textContent);
+
+	it('hands a renamed prop to Svelte under its Svelte name', async () => {
+		await act(async () => root.render(<List items={['a', 'b']} itemKey={(s) => `#${s}`} />));
+		expect(rows()).toEqual(['#a', '#b']);
+	});
+
+	it('keeps a renamed prop reactive', async () => {
+		await act(async () => root.render(<List items={['a']} itemKey={(s) => `#${s}`} />));
+		await act(async () => root.render(<List items={['a']} itemKey={(s) => `@${s}`} />));
+		expect(rows()).toEqual(['@a']);
 	});
 });

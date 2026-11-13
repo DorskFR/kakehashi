@@ -46,6 +46,14 @@ function resolve(value: unknown, args: unknown[]): ReactNode {
 	return value as ReactNode;
 }
 
+export interface ToReactOptions {
+	/**
+	 * React prop name → Svelte prop name. Reaches Svelte props React reserves,
+	 * e.g. `{ itemKey: 'key' }` since React never forwards `key`.
+	 */
+	rename?: Record<string, string>;
+}
+
 /**
  * Wrap a Svelte 5 component as a React one.
  *
@@ -62,7 +70,12 @@ function resolve(value: unknown, args: unknown[]): ReactNode {
 export function toReact<P extends AnyProps = AnyProps>(
 	SvelteComponent: Component<never> | unknown,
 	displayName?: string,
+	options: ToReactOptions = {},
 ): ComponentType<P & { children?: ReactNode }> {
+	const rename = options.rename ?? {};
+	const svelteName = (key: string): string =>
+		Object.hasOwn(rename, key) ? (rename[key] as string) : key;
+
 	function Bridge(props: P & { children?: ReactNode }) {
 		const hostRef = useRef<HTMLSpanElement | null>(null);
 		const stateRef = useRef<AnyProps | null>(null);
@@ -77,11 +90,11 @@ export function toReact<P extends AnyProps = AnyProps>(
 			const initial: AnyProps = {};
 			for (const [key, value] of Object.entries(props as AnyProps)) {
 				if (!isSnippetProp(key, value)) {
-					initial[key] = value;
+					initial[svelteName(key)] = value;
 					continue;
 				}
 				snippetKeys.current.add(key);
-				initial[key] = createSnippet((node, args) => {
+				initial[svelteName(key)] = createSnippet((node, args) => {
 					setSlots((prev) => {
 						const next = new Map(prev);
 						if (args === null) next.delete(node);
@@ -110,7 +123,8 @@ export function toReact<P extends AnyProps = AnyProps>(
 			if (!reactive) return;
 			for (const [key, value] of Object.entries(props as AnyProps)) {
 				if (snippetKeys.current.has(key)) continue;
-				if (reactive[key] !== value) reactive[key] = value;
+				const name = svelteName(key);
+				if (reactive[name] !== value) reactive[name] = value;
 			}
 		});
 
