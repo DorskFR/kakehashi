@@ -129,7 +129,6 @@ describe('named snippets', () => {
 		await act(async () => (el() as HTMLElement).click());
 		expect(clicks).toBe(1);
 	});
-
 });
 
 describe('rename', () => {
