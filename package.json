@@ -44,7 +44,6 @@
     "format": "biome check --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepare": "lefthook install || true",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
@@ -58,7 +57,6 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "jsdom": "^30.0.1",
-    "lefthook": "^2.1.12",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "svelte": "^5.57.0",
