@@ -1,3 +1,5 @@
+<img src="docs/assets/icon.svg" width="64" height="64" alt="">
+
 # kakehashi
 
 架け橋 — *a bridge between two things.*
